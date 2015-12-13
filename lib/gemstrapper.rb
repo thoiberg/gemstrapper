@@ -1,0 +1,3 @@
+module Gemstrapper
+
+end
