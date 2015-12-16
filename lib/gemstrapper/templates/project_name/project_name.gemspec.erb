@@ -1,0 +1,15 @@
+<%= options[:module_name] %>
+
+require_relative 'lib/<%= options[:project_name] %>/version'
+
+Gem::Specification.new do |s|
+  s.name          = '<%= options[:project_name] %>'
+  s.version       = <%= options[:module_name] %>::VERSION
+  s.license       = 'MIT'
+  s.summary       = "short summary here"
+  s.description   = "longer description here"
+  s.author        = 'user'
+  s.email         = 'user@example.com'
+  s.require_paths = ['lib']
+  s.homepage      = 'home page here'
+end
