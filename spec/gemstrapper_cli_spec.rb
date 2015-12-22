@@ -1,7 +1,7 @@
 require 'open3'
 
 describe 'Gemstrapper CLI' do
-    let(:script_path) { File.expand_path('../../bin/gemstrapper.rb', __FILE__) }
+    let(:script_path) { File.expand_path('../../bin/gemstrapper', __FILE__) }
 
     def execute_gemstrapper(command)
         o, s = Open3.capture2e("bundle exec ruby #{script_path} #{command}")
