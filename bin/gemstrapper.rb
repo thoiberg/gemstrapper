@@ -38,7 +38,7 @@ class OptionsParser
 		global.order!
 		command = args.shift
 		project_name = args.shift
-		raise ArgumentError("Invalid argument. Command should be: init <gem_name>") unless command or project_name
+		raise ArgumentError.new("Invalid argument. Command should be: init <gem_name>") unless command or project_name
 		options.update(project_name: project_name)
 		subcommands[command].order!
 
@@ -49,4 +49,5 @@ end
 
 command, options = OptionsParser.parse(ARGV)
 Gemstrapper.send(command, options)
+
 

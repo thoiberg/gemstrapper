@@ -7,6 +7,10 @@ describe Gemstrapper do
 	}}
 
 	describe '#init' do
+		before(:each) do
+			expect(STDOUT).to receive(:puts).at_least(:once)
+		end
+
 		it 'creates a typical gem folder structure' do
 			expect(File).to receive(:write).at_least(:once)
 
