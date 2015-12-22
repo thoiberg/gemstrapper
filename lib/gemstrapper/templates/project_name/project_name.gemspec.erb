@@ -1,5 +1,3 @@
-<%= options[:module_name] %>
-
 require_relative 'lib/<%= options[:project_name] %>/version'
 
 Gem::Specification.new do |s|
@@ -11,5 +9,6 @@ Gem::Specification.new do |s|
   s.author        = 'user'
   s.email         = 'user@example.com'
   s.require_paths = ['lib']
+  s.files         = Dir['lib/**/*']
   s.homepage      = 'home page here'
 end

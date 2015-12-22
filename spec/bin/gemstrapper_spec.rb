@@ -1,7 +1,7 @@
 require 'open3'
 
 describe 'Gemstrapper CLI' do
-    let(:script_path) { File.expand_path('../../bin/gemstrapper', __FILE__) }
+    let(:script_path) { File.expand_path('../../../bin/gemstrapper', __FILE__) }
 
     def execute_gemstrapper(command)
         o, s = Open3.capture2e("bundle exec ruby #{script_path} #{command}")
@@ -19,11 +19,18 @@ describe 'Gemstrapper CLI' do
         output, status = execute_gemstrapper('')
 
         expect(status.exitstatus).to eq(1)
-        expect(output).to include('Invalid argument. Command should be: init <gem_name> (ArgumentError)')
+        expect(output).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
+    end
+
+    it 'returns a message if the subcommand is invalid' do
+        output, status = execute_gemstrapper('fake')
+
+        expect(status.exitstatus).to eq(1)
+        expect(output).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
     end
 
     context 'init subcommand' do
-        let(:working_directory) { File.expand_path('../temp', __FILE__) }
+        let(:working_directory) { File.expand_path('../../temp', __FILE__) }
 
         before(:each) do
             Dir.mkdir(working_directory) unless Dir.exists? working_directory

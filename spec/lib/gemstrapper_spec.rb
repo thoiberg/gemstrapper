@@ -72,6 +72,7 @@ describe Gemstrapper do
 				expect(data).to include(%Q{s.author        = 'user'})
 				expect(data).to include(%Q{s.email         = 'user@example.com'})
 				expect(data).to include(%Q{s.require_paths = ['lib']})
+				expect(data).to include(%Q{s.files         = Dir['lib/**/*']})
 				expect(data).to include(%Q{s.homepage      = 'home page here'})
 			end
 
