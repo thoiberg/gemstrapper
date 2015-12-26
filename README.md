@@ -1,4 +1,6 @@
 # gemstrapper
+[![Build Status](https://travis-ci.org/thoiberg/gemstrapper.svg?branch=master)](https://travis-ci.org/thoiberg/gemstrapper)
+
 gemstrapper is a small gem that can create directories and common files for building gems.
 
 ## Installing
