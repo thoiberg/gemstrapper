@@ -20,7 +20,7 @@ module Gemstrapper
 	# @param [Hash] options The options passed in from the command line execution
 	# @return [void]
 	def init(options)
-		@options = default_options(options[:project_name]).update(options)
+		options = default_options(options[:project_name]).update(options)
 
 		new_files = []
 
@@ -29,7 +29,10 @@ module Gemstrapper
 		files.each do |file|
 			## creates directories
 			# converting project name placeholder to actual project name and stripping off erb extension
-			new_file_path = file.gsub('project_name', @options[:project_name]).gsub('.erb', '')
+			new_file_path = file.gsub('project_name', options[:project_name]).gsub('.erb', '')
+
+			# converting executable_name placeholder for any executable file names into valid names for the gem
+			new_file_path.gsub!('executable_name', options[:executable_name])
 			directory = File.dirname(new_file_path)
 
 			unless File.exist? directory
@@ -69,7 +72,8 @@ module Gemstrapper
 	def default_options(project_name)
 		{
 			module_name: module_name_for(project_name),
-			executable: false
+			executable: false,
+			executable_name: executable_name_for(project_name)
 		}
 	end
 

@@ -12,6 +12,14 @@ module Utility
 		def module_name_for(string)
 			string.split(/[-,_]/).map {|w| w.capitalize}.join('')
 		end
+
+        ##
+        # Converts a given string into a string that follow Ruby conventions for executable names
+        # @param [String] string the string to convert
+        # @return [String] The given string converted into a executable file name
+        def executable_name_for(string)
+            string.gsub('-', '_')
+        end
 	end
 end
 end

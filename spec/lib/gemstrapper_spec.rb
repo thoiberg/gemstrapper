@@ -1,10 +1,10 @@
 require 'gemstrapper'
 
 describe Gemstrapper do
-	let(:options) {{
-		project_name: 'my-gem',
-		module_name: 'MyGem'
-	}}
+	let(:project_name) { 'my-gem' }
+	let(:default_options) { Gemstrapper.default_options(project_name) }
+	let(:options) { {project_name: project_name}.update(default_options) }
+	let(:options_with_executable_set) { options.update(executable: true) }
 
 	describe '#init' do
 		before(:each) do
@@ -42,11 +42,17 @@ describe Gemstrapper do
 		end
 
 		it 'creates the executable files if the executable flag is set' do
+			# stubbing out side effects
 			expect(FileUtils).to receive(:mkdir_p).at_least(:once)
 			expect(File).to receive(:write).at_least(:once)
-			expect(Gemstrapper).to receive(:process_template).with('project_name/bin/my_gem', options).once
 
-			Gemstrapper.init(options.update(executable: true))
+			executable_file = File.join(Gemstrapper::TEMPLATES_DIRECTORY, 'project_name/bin/executable_name.erb')
+
+			allow(Gemstrapper).to receive(:template_files_for_gem) { ['project_name/bin/executable_name.erb'] }
+
+			expect(Gemstrapper).to receive(:process_template).with(executable_file, options).once
+
+			Gemstrapper.init(options_with_executable_set)
 		end
 
 	end
@@ -107,7 +113,8 @@ describe Gemstrapper do
 			default_options = Gemstrapper.default_options('my-gem')
 
 			expect(default_options).to eq({module_name: 'MyGem',
-										   executable: false})
+										   executable: false,
+										   executable_name: 'my_gem'})
 		end
 	end
 
@@ -119,6 +126,13 @@ describe Gemstrapper do
 			expect(files).to include('project_name/Gemfile.erb')
 			expect(files).to include('project_name/project_name.gemspec.erb')
 			expect(files).to include('project_name/lib/project_name/version.rb.erb')
+		end
+
+		it 'returns any executable template files if the executable_flag is set' do
+			files = Gemstrapper.template_files_for_gem(options_with_executable_set)
+
+			expect(files.count).to eq(4)
+			expect(files).to include('project_name/bin/executable_name.erb')
 		end
 	end
 

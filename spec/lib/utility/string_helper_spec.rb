@@ -4,7 +4,7 @@ describe Gemstrapper::Utility::StringHelpers do
 	include Gemstrapper::Utility::StringHelpers
 
 	describe '#module_name_for' do
-		it 'converts a hypenated string a module name' do
+		it 'converts a hyphenated string a module name' do
 			expect(module_name_for('test-gem')).to eq('TestGem')
 		end
 
@@ -12,4 +12,10 @@ describe Gemstrapper::Utility::StringHelpers do
 			expect(module_name_for('test_gem')).to eq('TestGem')
 		end
 	end
+
+    describe '#executable_name_for' do
+        it 'converts a hyphenated string into an underscored one' do
+            expect(executable_name_for('test-gem')).to eq('test_gem')
+        end
+    end
 end
