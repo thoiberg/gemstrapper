@@ -41,15 +41,27 @@ class OptionsParser
 
 		global.order!
 		command = args.shift
-		project_name = args.shift
 
-		unless (command and subcommands.has_key? command) and project_name
+
+
+		unless (command and subcommands.has_key? command)
 			puts "Invalid argument: Command should be: gemstrapper init <project_name>"
 			exit(1)
 		end
 		
-		options.update(project_name: project_name)
 		subcommands[command].order!
+		project_name = args.shift
+		# doing this a second time in case the first argument is the project_name, in which case
+		# OptsParse will nondisruptively fail on that value and not add the executable flag to the 
+		# options hash
+		subcommands[command].order!
+
+		unless project_name
+			puts "Invalid argument: Command should be: gemstrapper init <project_name>"
+			exit(1)
+		end
+
+		options.update(project_name: project_name)
 
 		return command, options
 	end

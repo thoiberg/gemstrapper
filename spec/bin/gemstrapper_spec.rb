@@ -31,6 +31,7 @@ describe 'Gemstrapper CLI' do
 
     context 'init subcommand' do
         let(:working_directory) { File.expand_path('../../temp', __FILE__) }
+        let(:project_name) { 'test-gem' }
 
         before(:each) do
             Dir.mkdir(working_directory) unless Dir.exists? working_directory
@@ -42,7 +43,6 @@ describe 'Gemstrapper CLI' do
 
         it 'creates the gem structure and files inside the current working directory' do
             output, status = nil
-            project_name = 'test-gem'
 
             Dir.chdir(working_directory) do
                 output, status = execute_gemstrapper("init #{project_name}")
@@ -54,15 +54,15 @@ describe 'Gemstrapper CLI' do
             expect(output).to include("#{project_name}/lib/test-gem/version.rb created")
             expect(output).to include("#{project_name}/lib/test_gem.rb created")
 
-            expect(Dir.exists?("#{working_directory}/test-gem")).to be_truthy
-            expect(Dir.exists?("#{working_directory}/test-gem/lib")).to be_truthy
-            expect(Dir.exists?("#{working_directory}/test-gem/bin")).to be_falsey
-            expect(Dir.exists?("#{working_directory}/test-gem/lib/test-gem")).to be_truthy
+            expect(File.exists?("#{working_directory}/#{project_name}/Gemfile")).to be_truthy
+            expect(File.exists?("#{working_directory}/#{project_name}/test-gem.gemspec")).to be_truthy
+            expect(File.exists?("#{working_directory}/#{project_name}/lib/#{project_name}/version.rb")).to be_truthy
+            expect(File.exists?("#{working_directory}/#{project_name}/lib/test_gem.rb")).to be_truthy
+            expect(File.exists?("#{working_directory}/#{project_name}/bin/test_gem")).to be_falsey
         end
 
-        it 'creates the executable files if the executable flag is set' do
+        it 'creates the executable files if the executable flag is set', test: true do
             output, status = nil
-            project_name = 'test-gem'
 
             Dir.chdir(working_directory) do
                 output, status = execute_gemstrapper("init #{project_name} --executable")
@@ -73,6 +73,17 @@ describe 'Gemstrapper CLI' do
 
             expect(File.exists? "#{working_directory}/test-gem/bin/test_gem").to be_truthy
             expect(File.executable? "#{working_directory}/test-gem/bin/test_gem").to be_truthy
+        end
+
+        it 'can work regardless of subcommand order' do
+            output, status = nil
+
+            Dir.chdir(working_directory) do
+                output, status = execute_gemstrapper("init -e #{project_name}")
+            end
+
+            expect(status).to eq(0)
+            expect(output).to include("#{project_name}/bin/test_gem created")
         end
     end
     
