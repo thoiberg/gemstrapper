@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 <% if options[:executable] %>
   s.bindir        = 'bin'
-  s.executables   << '<%= options[:executable_name] %>'
+  s.executables   << '<%= options[:project_file_name] %>'
 <% end %>
   s.files         = Dir['lib/**/*']
 <% if options[:executable] %>

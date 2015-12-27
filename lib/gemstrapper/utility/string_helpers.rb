@@ -14,10 +14,10 @@ module Utility
 		end
 
         ##
-        # Converts a given string into a string that follow Ruby conventions for executable names
+        # Converts a given string into a string that follow Ruby conventions for file names
         # @param [String] string the string to convert
-        # @return [String] The given string converted into a executable file name
-        def executable_name_for(string)
+        # @return [String] The given string converted into a file name
+        def filename_for(string)
             string.gsub('-', '_')
         end
 	end

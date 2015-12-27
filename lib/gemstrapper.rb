@@ -26,13 +26,17 @@ module Gemstrapper
 
 		files = template_files_for_gem(options)
 
+		#require 'pry';binding.pry
+
 		files.each do |file|
 			## creates directories
 			# converting project name placeholder to actual project name and stripping off erb extension
 			new_file_path = file.gsub('project_name', options[:project_name]).gsub('.erb', '')
 
+			new_file_path.gsub!('project_file_name', options[:project_file_name])
 			# converting executable_name placeholder for any executable file names into valid names for the gem
-			new_file_path.gsub!('executable_name', options[:executable_name])
+			new_file_path.gsub!('executable_name', options[:project_file_name])
+
 			directory = File.dirname(new_file_path)
 
 			unless File.exist? directory
@@ -79,7 +83,7 @@ module Gemstrapper
 		{
 			module_name: module_name_for(project_name),
 			executable: false,
-			executable_name: executable_name_for(project_name)
+			project_file_name: filename_for(project_name)
 		}
 	end
 

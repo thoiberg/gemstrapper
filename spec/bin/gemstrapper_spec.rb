@@ -52,6 +52,7 @@ describe 'Gemstrapper CLI' do
             expect(output).to include("#{project_name}/Gemfile created")
             expect(output).to include("#{project_name}/test-gem.gemspec created")
             expect(output).to include("#{project_name}/lib/test-gem/version.rb created")
+            expect(output).to include("#{project_name}/lib/test_gem.rb created")
 
             expect(Dir.exists?("#{working_directory}/test-gem")).to be_truthy
             expect(Dir.exists?("#{working_directory}/test-gem/lib")).to be_truthy

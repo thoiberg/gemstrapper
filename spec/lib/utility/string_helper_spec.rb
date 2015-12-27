@@ -13,9 +13,9 @@ describe Gemstrapper::Utility::StringHelpers do
 		end
 	end
 
-    describe '#executable_name_for' do
+    describe '#filename_for' do
         it 'converts a hyphenated string into an underscored one' do
-            expect(executable_name_for('test-gem')).to eq('test_gem')
+            expect(filename_for('test-gem')).to eq('test_gem')
         end
     end
 end
