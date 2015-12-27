@@ -23,6 +23,13 @@ The application will generate the basic scaffolding for a gem as well as common 
 and Gemfile. The top level module is created by converting the gem name into valid Ruby syntax for constants,
 eg `my-gem` will become `MyGem`
 
+To configure the gem to have an executable component you can add the `-e` or `--executable` argument to the `init`
+subcommand
+
+    $ gemstrapper init my-gem -e
+    ...
+    my-gem/bin/my_gem created
+
 ## License
 
 gemstrapper is licensed under the [MIT license](LICENSE)
