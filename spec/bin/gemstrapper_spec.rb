@@ -61,7 +61,7 @@ describe 'Gemstrapper CLI' do
             expect(File.exists?("#{working_directory}/#{project_name}/bin/test_gem")).to be_falsey
         end
 
-        it 'creates the executable files if the executable flag is set', test: true do
+        it 'creates the executable files if the executable flag is set' do
             output, status = nil
 
             Dir.chdir(working_directory) do

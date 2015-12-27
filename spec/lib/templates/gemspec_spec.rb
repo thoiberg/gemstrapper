@@ -15,7 +15,7 @@ describe 'project_name.gemspec template' do
         expect(data).to include(%Q{s.version       = #{options[:module_name]}::VERSION})
         expect(data).to include(%Q{s.version       = #{options[:module_name]}::VERSION})
         expect(data).to include(%Q{s.license       = 'MIT'})
-        expect(data).to include(%Q{s.platform      = 'Gem::Platform::RUBY'})
+        expect(data).to include(%Q{s.platform      = Gem::Platform::RUBY})
         expect(data).to include(%Q{s.summary       = "short summary here"})
         expect(data).to include(%Q{s.description   = "longer description here"})
         expect(data).to include(%Q{s.author        = 'user'})
