@@ -32,6 +32,10 @@ class OptionsParser
 		subcommands = { 
 		  'init' => OptionParser.new do |opts|
 		      opts.banner = "Usage: init <folder_name>"
+
+		      opts.on("-e", "--executable", "Configures gem to be executable") do |e|
+			    options[:executable] = e
+			  end
 		    end
 		 }
 

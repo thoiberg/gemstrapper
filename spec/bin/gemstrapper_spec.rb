@@ -22,7 +22,7 @@ describe 'Gemstrapper CLI' do
         expect(output).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
     end
 
-    it 'returns a message if the subcommand is invalid', test: true do
+    it 'returns a message if the subcommand is invalid' do
         output, status = execute_gemstrapper('fake my-gem')
 
         expect(status.exitstatus).to eq(1)
@@ -55,7 +55,22 @@ describe 'Gemstrapper CLI' do
 
             expect(Dir.exists?("#{working_directory}/test-gem")).to be_truthy
             expect(Dir.exists?("#{working_directory}/test-gem/lib")).to be_truthy
+            expect(Dir.exists?("#{working_directory}/test-gem/bin")).to be_falsey
             expect(Dir.exists?("#{working_directory}/test-gem/lib/test-gem")).to be_truthy
+        end
+
+        it 'creates the executable files if the executable flag is set' do
+            output, status = nil
+            project_name = 'test-gem'
+
+            Dir.chdir(working_directory) do
+                output, status = execute_gemstrapper("init #{project_name} --executable")
+            end
+
+            expect(status).to eq(0)
+            expect(output).to include("#{project_name}/bin/test_gem created")
+
+            expect(File.exists? "#{project_name}/bin/test_gem").to be_truthy
         end
     end
     

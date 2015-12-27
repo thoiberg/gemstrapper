@@ -8,6 +8,10 @@ require 'gemstrapper/utility/string_helpers'
 module Gemstrapper
 	include Utility::StringHelpers
 
+	##
+	# The absolute path of the directory containing all the templates needed for a new gem
+	TEMPLATES_DIRECTORY = File.expand_path('gemstrapper/templates', File.dirname(__FILE__))
+
 	extend self
 
 	##
@@ -20,12 +24,7 @@ module Gemstrapper
 
 		new_files = []
 
-		# Getting a list of folders to create based on folder structure within lib/templates
-		templates_directory = File.expand_path('gemstrapper/templates', File.dirname(__FILE__))
-
-		files = Dir.chdir(templates_directory) do
-			Dir.glob('**/*.erb')
-		end
+		files = template_files_for_gem(options)
 
 		files.each do |file|
 			## creates directories
@@ -37,7 +36,7 @@ module Gemstrapper
 				FileUtils.mkdir_p directory
 			end
 
-			data = process_template(File.join(templates_directory, file), options)
+			data = process_template(File.join(TEMPLATES_DIRECTORY, file), options)
 			File.write(new_file_path, data)
 			new_files << new_file_path
 		end
@@ -69,8 +68,29 @@ module Gemstrapper
 	# @return [Hash] the default options
 	def default_options(project_name)
 		{
-			module_name: module_name_for(project_name)
+			module_name: module_name_for(project_name),
+			executable: false
 		}
+	end
+
+	##
+	# returns a list of template files to be processed and created for the new gem
+	# @param [Hash] options a list of the current execution options
+	# @return [Array] a list of template files
+	def template_files_for_gem(options)
+		files = []
+
+		Dir.chdir(TEMPLATES_DIRECTORY) do
+			files += Dir.glob('project_name/lib/**/*.erb') # library files
+			files << 'project_name/Gemfile.erb' # adding Gemfile
+			files << 'project_name/project_name.gemspec.erb' # adding Gemspec
+
+			if options[:executable]
+				files += Dir.glob('project_name/bin/*.erb') # executable files
+			end
+		end
+
+		files
 	end
 
 end
