@@ -4,11 +4,19 @@ Gem::Specification.new do |s|
   s.name          = '<%= options[:project_name] %>'
   s.version       = <%= options[:module_name] %>::VERSION
   s.license       = 'MIT'
+  s.platform      = 'Gem::Platform::RUBY'
   s.summary       = "short summary here"
   s.description   = "longer description here"
   s.author        = 'user'
   s.email         = 'user@example.com'
   s.require_paths = ['lib']
+<% if options[:executable] %>
+  s.bindir        = 'bin'
+  s.executables   << '<%= options[:executable_name] %>'
+<% end %>
   s.files         = Dir['lib/**/*']
+<% if options[:executable] %>
+  s.files         += Dir['bin/*']
+<% end %>
   s.homepage      = 'home page here'
 end

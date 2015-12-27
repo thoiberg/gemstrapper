@@ -67,45 +67,6 @@ describe Gemstrapper do
 
 			expect(data).to eq('project_name: my-gem')
 		end
-
-		context '#gem files' do
-			it 'generates the content for the version.rb' do
-				version_file = File.join(template_path, 'lib', 'project_name', 'version.rb.erb')
-				data = Gemstrapper.process_template(version_file, options)
-
-				expect(data).to include('module MyGem')
-				expect(data).to include(%Q{VERSION = '0.0.1' unless defined? VERSION})
-				expect(data).to include('end')
-			end
-
-			it 'generates the content for the gemspec' do
-				gemspec_file = File.join(template_path, 'project_name.gemspec.erb')
-				data = Gemstrapper.process_template(gemspec_file, options)
-
-
-				# TODO: Write a custom RSpec matcher to perform whitespace agnostic matching
-				expect(data).to include('Gem::Specification.new do |s|')
-				expect(data).to include(%Q{s.name          = '#{options[:project_name]}'})
-				expect(data).to include(%Q{s.version       = #{options[:module_name]}::VERSION})
-				expect(data).to include(%Q{s.version       = #{options[:module_name]}::VERSION})
-				expect(data).to include(%Q{s.license       = 'MIT'})
-				expect(data).to include(%Q{s.summary       = "short summary here"})
-				expect(data).to include(%Q{s.description   = "longer description here"})
-				expect(data).to include(%Q{s.author        = 'user'})
-				expect(data).to include(%Q{s.email         = 'user@example.com'})
-				expect(data).to include(%Q{s.require_paths = ['lib']})
-				expect(data).to include(%Q{s.files         = Dir['lib/**/*']})
-				expect(data).to include(%Q{s.homepage      = 'home page here'})
-			end
-
-			it 'generates the Gemfile' do
-				gemfile_file = File.join(template_path, 'Gemfile.erb')
-				data = Gemstrapper.process_template(gemfile_file, options)
-
-				expect(data).to include(%Q{source "https://rubygems.org"})
-				expect(data).to include(%Q{gemspec})
-			end
-		end
 	end
 
 	describe '#default_options' do
