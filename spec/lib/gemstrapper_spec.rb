@@ -86,5 +86,13 @@ describe Gemstrapper do
 		end
 	end
 
+	describe '#default_options' do
+		it 'returns a hash of default options' do
+			default_options = Gemstrapper.default_options('my-gem')
+
+			expect(default_options).to eq({module_name: 'MyGem'})
+		end
+	end
+
 
 end

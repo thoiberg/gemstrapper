@@ -16,11 +16,10 @@ module Gemstrapper
 	# @param [Hash] options The options passed in from the command line execution
 	# @return [void]
 	def init(options)
-		@options = options
+		@options = default_options(options[:project_name]).update(options)
 
 		new_files = []
 
-		@options[:module_name] = module_name_for(@options[:project_name])
 		# Getting a list of folders to create based on folder structure within lib/templates
 		templates_directory = File.expand_path('gemstrapper/templates', File.dirname(__FILE__))
 
@@ -62,4 +61,16 @@ module Gemstrapper
 
 		ERB.new(template_data).result binding
 	end
+
+	##
+	# default config options for the execution
+	# @param [String] project_name the name of the project. Used to create the default
+	#     module name
+	# @return [Hash] the default options
+	def default_options(project_name)
+		{
+			module_name: module_name_for(project_name)
+		}
+	end
+
 end
