@@ -46,10 +46,11 @@ describe Gemstrapper do
 			expect(FileUtils).to receive(:mkdir_p).at_least(:once)
 			expect(File).to receive(:write).at_least(:once)
 
-			executable_file = File.join(Gemstrapper::TEMPLATES_DIRECTORY, 'project_name/bin/executable_name.erb')
-
 			allow(Gemstrapper).to receive(:template_files_for_gem) { ['project_name/bin/executable_name.erb'] }
 
+			expect(File).to receive(:chmod).with(0755, anything).once
+
+			executable_file = File.join(Gemstrapper::TEMPLATES_DIRECTORY, 'project_name/bin/executable_name.erb')
 			expect(Gemstrapper).to receive(:process_template).with(executable_file, options).once
 
 			Gemstrapper.init(options_with_executable_set)

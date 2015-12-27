@@ -71,6 +71,7 @@ describe 'Gemstrapper CLI' do
             expect(output).to include("#{project_name}/bin/test_gem created")
 
             expect(File.exists? "#{working_directory}/test-gem/bin/test_gem").to be_truthy
+            expect(File.executable? "#{working_directory}/test-gem/bin/test_gem").to be_truthy
         end
     end
     

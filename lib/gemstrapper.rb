@@ -44,6 +44,12 @@ module Gemstrapper
 			new_files << new_file_path
 		end
 
+		## modifying executable files to be executable
+		# TODO: Check windows compatibility with this feature
+		exe_files = new_files.select {|f| f.include? 'bin/'}.each do |file|
+			File.chmod(0755, file)
+		end
+
 		#reporting
 		new_files.each do |nf|
 			puts "#{nf} created"
