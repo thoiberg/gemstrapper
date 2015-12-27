@@ -39,7 +39,7 @@ class OptionsParser
 		command = args.shift
 		project_name = args.shift
 
-		unless command and project_name
+		unless (command and subcommands.has_key? command) and project_name
 			puts "Invalid argument: Command should be: gemstrapper init <project_name>"
 			exit(1)
 		end

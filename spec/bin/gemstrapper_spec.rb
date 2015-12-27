@@ -22,8 +22,8 @@ describe 'Gemstrapper CLI' do
         expect(output).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
     end
 
-    it 'returns a message if the subcommand is invalid' do
-        output, status = execute_gemstrapper('fake')
+    it 'returns a message if the subcommand is invalid', test: true do
+        output, status = execute_gemstrapper('fake my-gem')
 
         expect(status.exitstatus).to eq(1)
         expect(output).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
