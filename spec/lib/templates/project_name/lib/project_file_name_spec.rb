@@ -10,7 +10,7 @@ describe 'top level library file template' do
 
         expect(data).to include(%Q{require '#{options[:project_name]}/version'})
         expect(data).to include(%Q{module #{options[:module_name]}})
-        expect(data).to include(%Q{include #{options[:module_name]}::VERSION})
+        expect(data).to include(%Q{end})
     end
 
 end
