@@ -1,32 +1,30 @@
 require 'open3'
+require 'cli_test'
 
 describe 'Gemstrapper CLI' do
+    include CliTest
+
     let(:script_path) { File.expand_path('../../../bin/gemstrapper', __FILE__) }
 
-    def execute_gemstrapper(command)
-        o, s = Open3.capture2e("bundle exec ruby #{script_path} #{command}")
-        return o, s
-    end
-
     it 'displays the help message when the --help switch is used' do
-        output, status = execute_gemstrapper('--help')
+        execute_script(script_path, args: '--help')
 
-        expect(status.exitstatus).to eq(0)
-        expect(output).to include('Usage: gemstrapper [options] [subcommand [options]]')
+        expect(last_execution).to be_successful
+        expect(last_execution.output).to include('Usage: gemstrapper [options] [subcommand [options]]')
     end
 
     it 'returns an error if a subcommand is not specified' do
-        output, status = execute_gemstrapper('')
+        execute_script(script_path)
 
-        expect(status.exitstatus).to eq(1)
-        expect(output).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
+        expect(last_execution).not_to be_successful
+        expect(last_execution.stdout).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
     end
 
     it 'returns a message if the subcommand is invalid' do
-        output, status = execute_gemstrapper('fake my-gem')
+        execute_script(script_path, args: ['fake', 'my-gem'])
 
-        expect(status.exitstatus).to eq(1)
-        expect(output).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
+        expect(last_execution).not_to be_successful
+        expect(last_execution.stdout).to eq("Invalid argument: Command should be: gemstrapper init <project_name>\n")
     end
 
     context 'init subcommand' do
@@ -42,17 +40,15 @@ describe 'Gemstrapper CLI' do
         end
 
         it 'creates the gem structure and files inside the current working directory' do
-            output, status = nil
-
             Dir.chdir(working_directory) do
-                output, status = execute_gemstrapper("init #{project_name}")
+                execute_script(script_path, args: ['init', "#{project_name}"])
             end
 
-            expect(status).to eq(0)
-            expect(output).to include("#{project_name}/Gemfile created")
-            expect(output).to include("#{project_name}/test-gem.gemspec created")
-            expect(output).to include("#{project_name}/lib/test-gem/version.rb created")
-            expect(output).to include("#{project_name}/lib/test_gem.rb created")
+            expect(last_execution).to be_successful
+            expect(last_execution.output).to include("#{project_name}/Gemfile created")
+            expect(last_execution.output).to include("#{project_name}/test-gem.gemspec created")
+            expect(last_execution.output).to include("#{project_name}/lib/test-gem/version.rb created")
+            expect(last_execution.output).to include("#{project_name}/lib/test_gem.rb created")
 
             expect(File.exists?("#{working_directory}/#{project_name}/Gemfile")).to be_truthy
             expect(File.exists?("#{working_directory}/#{project_name}/test-gem.gemspec")).to be_truthy
@@ -62,28 +58,24 @@ describe 'Gemstrapper CLI' do
         end
 
         it 'creates the executable files if the executable flag is set' do
-            output, status = nil
-
             Dir.chdir(working_directory) do
-                output, status = execute_gemstrapper("init #{project_name} --executable")
+                execute_script(script_path, args: ['init', "#{project_name}", '--executable'])
             end
 
-            expect(status).to eq(0)
-            expect(output).to include("#{project_name}/bin/test_gem created")
+            expect(last_execution).to be_successful
+            expect(last_execution.output).to include("#{project_name}/bin/test_gem created")
 
             expect(File.exists? "#{working_directory}/test-gem/bin/test_gem").to be_truthy
             expect(File.executable? "#{working_directory}/test-gem/bin/test_gem").to be_truthy
         end
 
         it 'can work regardless of subcommand order' do
-            output, status = nil
-
             Dir.chdir(working_directory) do
-                output, status = execute_gemstrapper("init -e #{project_name}")
+                execute_script(script_path, args: ['init', '-e', "#{project_name}"])
             end
 
-            expect(status).to eq(0)
-            expect(output).to include("#{project_name}/bin/test_gem created")
+            expect(last_execution).to be_successful
+            expect(last_execution.output).to include("#{project_name}/bin/test_gem created")
         end
     end
     
