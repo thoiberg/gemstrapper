@@ -1,5 +1,5 @@
 require 'open3'
-require 'cli_test'
+require 'cli-test'
 
 describe 'Gemstrapper CLI' do
     include CliTest
