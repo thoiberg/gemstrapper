@@ -77,6 +77,19 @@ describe 'Gemstrapper CLI' do
             expect(last_execution).to be_successful
             expect(last_execution.output).to include("#{project_name}/bin/test_gem created")
         end
+
+        it 'uses the --module_name option to generate the module name' do
+            module_name = "TestMod"
+
+            Dir.chdir(working_directory) do
+                execute_script(script_path, args: ['init', "#{project_name}",
+                    "--module_name=#{module_name}"])
+            end
+
+            expect(last_execution).to be_successful
+            expect(File.read("#{working_directory}/#{project_name}/lib/test_gem.rb")).to \
+                include("module #{module_name}")
+        end
     end
     
 end
