@@ -3,30 +3,25 @@ require 'fileutils'
 
 require 'gemstrapper/utility/string_helpers'
 
-##
 # Top level module for the app.
 module Gemstrapper
 	include Utility::StringHelpers
 
-	##
 	# The absolute path of the directory containing all the templates needed for a new gem
 	TEMPLATES_DIRECTORY = File.expand_path('gemstrapper/templates', File.dirname(__FILE__))
 
 	extend self
 
-	##
 	# Initialises a gem folder structure based on the project name passed in from the command
 	# line and populates it with command files and configuration
 	# @param [Hash] options The options passed in from the command line execution
-	# @return [void]
+	# @return [Void]
 	def init(options)
 		options = default_options(options[:project_name]).update(options)
 
 		new_files = []
 
 		files = template_files_for_gem(options)
-
-		#require 'pry';binding.pry
 
 		files.each do |file|
 			## creates directories
@@ -60,7 +55,6 @@ module Gemstrapper
 		end
 	end
 
-	##
 	# Reads an ERB file and populates the templated data from info in the
 	# current execution scope
 	# @param [String] file_path The absolute path of the ERB file
@@ -74,7 +68,6 @@ module Gemstrapper
 		ERB.new(template_data).result binding
 	end
 
-	##
 	# default config options for the execution
 	# @param [String] project_name the name of the project. Used to create the default
 	#     module name
@@ -87,7 +80,6 @@ module Gemstrapper
 		}
 	end
 
-	##
 	# returns a list of template files to be processed and created for the new gem
 	# @param [Hash] options a list of the current execution options
 	# @return [Array] a list of template files
